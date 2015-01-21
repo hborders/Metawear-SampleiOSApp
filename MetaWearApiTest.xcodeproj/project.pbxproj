@@ -176,7 +176,7 @@
 				ORGANIZATIONNAME = MbientLab;
 				TargetAttributes = {
 					402D420A198843BE0011ADB1 = {
-						DevelopmentTeam = V9V8S5TL85;
+						DevelopmentTeam = RTNF9A97B6;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;

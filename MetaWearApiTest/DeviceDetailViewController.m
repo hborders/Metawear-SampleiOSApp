@@ -186,10 +186,34 @@
 
 - (IBAction)readTempraturePressed:(id)sender
 {
-    [self.device.temperature readTemperatureWithHandler:^(NSDecimalNumber *temp, NSError *error) {
-        NSString *suffix = self.device.temperature.units == MBLTemperatureUnitCelsius ? @"°C" : @"°F";
-        self.tempratureLabel.text = [[temp stringValue] stringByAppendingString:suffix];
+    MBLEvent *firstLastEvent = [self.device.ancs eventWithCategoryIds:MBLANCSCategoryIDAny
+                                                             eventIds:MBLANCSEventIDNotificationAdded
+                                                           eventFlags:MBLANCSEventFlagAny
+                                                          attributeId:MBLANCSNotificationAttributeIDTitle
+                                                        attributeData:@"Heath Borders"
+                                                           identifier:nil];
+    [firstLastEvent programCommandsToRunOnEvent:^{
+        [self.device.led flashLEDColor:[UIColor redColor]
+                         withIntensity:1.0
+                       numberOfFlashes:2];
     }];
+    MBLEvent *firstEvent = [self.device.ancs eventWithCategoryIds:MBLANCSCategoryIDAny
+                                                         eventIds:MBLANCSEventIDNotificationAdded
+                                                       eventFlags:MBLANCSEventFlagAny
+                                                      attributeId:MBLANCSNotificationAttributeIDTitle
+                                                    attributeData:@"Heath"
+                                                       identifier:nil];
+    [firstEvent programCommandsToRunOnEvent:^{
+        [self.device.led flashLEDColor:[UIColor greenColor]
+                         withIntensity:1.0
+                       numberOfFlashes:2];
+    }];
+    NSLog(@"Programmed!");
+    
+//    [self.device.temperature readTemperatureWithHandler:^(NSDecimalNumber *temp, NSError *error) {
+//        NSString *suffix = self.device.temperature.units == MBLTemperatureUnitCelsius ? @"°C" : @"°F";
+//        self.tempratureLabel.text = [[temp stringValue] stringByAppendingString:suffix];
+//    }];
 }
 
 - (IBAction)turnOnGreenLEDPressed:(id)sender
